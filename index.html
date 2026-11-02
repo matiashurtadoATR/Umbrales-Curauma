@@ -39,6 +39,7 @@ a{color:var(--info)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-text);font-weight:600}
 .btn.primary:hover{filter:brightness(1.05)}
 .btn.small{padding:4px 9px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .badge{display:inline-block;min-width:20px;padding:1px 7px;border-radius:999px;font-size:12px;font-weight:600;text-align:center}
 .badge.warn{background:var(--warn-soft);color:var(--warn)}
 .badge.danger{background:var(--danger-soft);color:var(--danger)}
@@ -47,9 +48,12 @@ a{color:var(--info)}
 .badge.muted{background:var(--surface-2);color:var(--muted)}
 header{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
 .hwrap{max-width:1500px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.brand{display:flex;flex-direction:column;margin-right:auto;min-width:0}
+.brand{display:flex;flex-direction:column;min-width:0}
 .brand b{font-size:16px}
 .brand span{color:var(--muted);font-size:12px}
+.nav{display:inline-flex;gap:4px;margin-right:auto;margin-left:12px}
+.nav button{border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--muted)}
+.nav button.on{background:var(--accent-soft);color:var(--accent)}
 .hactions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .user{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px}
 .user input{width:130px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
@@ -73,29 +77,47 @@ main{max-width:1500px;margin:0 auto;padding:16px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .toolbar input[type=search]{flex:1 1 240px;min-width:0;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
 .toolbar select{padding:7px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);max-width:100%}
+.toolbar .check{font-size:13px}
 .seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .seg button{border:0;background:var(--surface);padding:7px 12px;cursor:pointer}
 .seg button.on{background:var(--accent);color:var(--accent-text);font-weight:600}
 .count{color:var(--muted);font-size:13px;margin-left:auto}
 .board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px}
-.col{background:var(--surface-2);border-radius:var(--radius);padding:8px;min-height:120px}
+.col{background:var(--surface-2);border-radius:var(--radius);padding:8px;min-height:160px;border:2px dashed transparent}
+.col.dropok{border-color:var(--accent);background:var(--accent-soft)}
+.col.dropno{border-color:var(--danger)}
 .col h3{font-size:13px;margin:2px 4px 8px;display:flex;justify-content:space-between;gap:6px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:8px;cursor:pointer;box-shadow:var(--shadow)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:8px;cursor:grab;box-shadow:var(--shadow)}
 .card:hover{border-color:var(--accent)}
+.card.dragging{opacity:.4}
 .card .t{font-weight:600;font-size:13px;line-height:1.3}
 .card .s{color:var(--muted);font-size:12px;margin-top:2px}
 .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .dots{display:inline-flex;gap:3px;vertical-align:middle}
 .dots i{width:9px;height:9px;border-radius:50%;background:var(--border);display:inline-block}
 .dots i.on{background:var(--done)}
-.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.tablewrap{overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);max-height:calc(100vh - 210px)}
 table.list{border-collapse:collapse;width:100%;min-width:1100px}
 table.list th,table.list td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-table.list th{font-size:12px;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;background:var(--surface-2);position:sticky;top:0}
+table.list th{font-size:12px;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;background:var(--surface-2);position:sticky;top:0;z-index:1}
 table.list tr:hover td{background:var(--surface-2);cursor:pointer}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 table.list td:first-child{white-space:nowrap}
 .empty{color:var(--muted);text-align:center;padding:30px}
+/* tabla brokers */
+table.edit{border-collapse:collapse;width:100%;min-width:1750px;font-size:13px}
+table.edit th,table.edit td{padding:5px 6px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
+table.edit th{font-size:12px;color:var(--muted);font-weight:600;background:var(--surface-2);position:sticky;top:0;z-index:1;line-height:1.25}
+table.edit td.ro{color:var(--muted)}
+table.edit input,table.edit select{width:100%;padding:5px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);min-width:0}
+table.edit input[type=number]{text-align:right}
+table.edit input:disabled{background:var(--surface-2);color:var(--muted)}
+table.edit .falta input,table.edit .falta select{border-color:var(--danger);background:var(--danger-soft)}
+table.edit .saved input,table.edit .saved select{border-color:var(--accent)}
+table.edit td.cliente{min-width:200px}
+table.edit td.cliente b{display:block;font-size:13px}
+table.edit tr.conpend td.cliente{box-shadow:inset 3px 0 0 var(--danger)}
+.negativo{color:var(--danger);font-weight:600}
 /* drawer */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40}
 aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--bg);z-index:50;overflow-y:auto;box-shadow:-6px 0 24px rgba(0,0,0,.15)}
@@ -105,6 +127,7 @@ aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);backgro
 .dbody{padding:14px 16px 40px}
 .box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
 .box h4{margin:0 0 10px;font-size:14px}
+.box h4 .hint{font-weight:400}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px}
 .kv{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--border);padding:3px 0;min-width:0}
 .kv span:first-child{color:var(--muted)}
@@ -112,8 +135,13 @@ aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);backgro
 .field{display:flex;flex-direction:column;gap:3px;min-width:0}
 .field label{font-size:12px;color:var(--muted)}
 .field input,.field select,.field textarea{padding:7px 9px;border:1px solid var(--border);border-radius:8px;background:var(--surface);width:100%}
+.field input:disabled{background:var(--surface-2);color:var(--muted)}
 .field textarea{min-height:58px;resize:vertical}
+.field .err{color:var(--danger);font-size:12px}
+.field.bad input,.field.bad select{border-color:var(--danger)}
+.req{color:var(--danger)}
 .fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px}
+.span2{grid-column:span 2}
 .step{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);margin-bottom:10px;overflow:hidden}
 .step .sh{display:flex;gap:10px;align-items:center;padding:10px 12px}
 .step .num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--surface-2);flex:none;text-align:center}
@@ -123,26 +151,58 @@ aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);backgro
 .step .sd{color:var(--muted);font-size:12px}
 .step .sb{padding:0 12px 12px 50px;display:grid;gap:8px}
 .check{display:flex;align-items:center;gap:8px;cursor:pointer}
-.check input{width:18px;height:18px;accent-color:var(--accent)}
+.check input{width:18px;height:18px;accent-color:var(--accent);flex:none}
 .fin{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;background:var(--surface-2);border-radius:8px;padding:10px}
 .log{list-style:none;margin:0;padding:0}
 .log li{border-left:3px solid var(--border);padding:4px 10px;margin-bottom:6px}
 .log li.paso{border-color:var(--accent)}
+.log li.campo{border-color:var(--info)}
 .log .m{color:var(--muted);font-size:12px}
 table.mini{width:100%;border-collapse:collapse;font-size:13px}
 table.mini td,table.mini th{padding:4px 6px;border-bottom:1px solid var(--border);text-align:left}
 .hint{color:var(--muted);font-size:12px}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:90;font-size:13px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:90;font-size:13px;max-width:calc(100% - 32px)}
 .loading{position:fixed;inset:0;background:rgba(0,0,0,.3);display:grid;place-items:center;z-index:95}
 .loading div{background:var(--surface);padding:18px 24px;border-radius:12px;box-shadow:var(--shadow)}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70;display:grid;place-items:center;padding:16px}
+.mbox{background:var(--bg);border-radius:14px;width:min(640px,100%);max-height:calc(100vh - 32px);overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.mhead{padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0}
+.mhead h3{margin:0;font-size:16px}
+.mhead .s{color:var(--muted);font-size:13px;margin-top:2px}
+.mbody{padding:14px 18px;display:grid;gap:10px}
+.mfoot{padding:12px 18px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border);background:var(--surface);position:sticky;bottom:0}
+#print{display:none}
 [hidden]{display:none!important}
 @media (max-width:1100px){.funnel{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:640px){
   .funnel{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fields,.grid2,.fin{grid-template-columns:minmax(0,1fr)}
+  .span2{grid-column:auto}
   .step .sb{padding-left:12px}
   .brand b{font-size:15px}
+  .nav{margin-left:0;width:100%}
   .count{margin-left:0;width:100%}
+}
+/* impresión de reportes */
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff;color:#000;font-size:9pt}
+  body > *:not(#print){display:none!important}
+  #print{display:block!important}
+  .rep{page-break-after:always}
+  .rep:last-child{page-break-after:auto}
+  .rep h1{font-size:14pt;margin:0}
+  .rep .sub{font-size:9pt;color:#444;margin:2px 0 8px}
+  .rep .nota{font-size:8.5pt;margin:0 0 6px}
+  .rep table{border-collapse:collapse;width:100%;font-size:7.5pt}
+  .rep th,.rep td{border:1px solid #999;padding:3px 4px;vertical-align:top;text-align:left}
+  .rep th{background:#e8ece9;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rep td.vacio{background:#fff4d6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rep td.corr{min-width:110px}
+  .rep .firma{margin-top:18px;display:flex;gap:40px;font-size:9pt}
+  .rep .firma span{flex:1;border-top:1px solid #000;padding-top:4px}
+  .rep tr{page-break-inside:avoid}
 }
 </style>
 </head>
@@ -150,6 +210,7 @@ table.mini td,table.mini th{padding:4px 6px;border-bottom:1px solid var(--border
 <header>
   <div class="hwrap">
     <div class="brand"><b>Escrituración y entregas</b><span>Condominio Espacio Las Tablas Curauma · Inmobiliaria Umbrales Quince SpA</span></div>
+    <nav class="nav" id="nav"><button data-m="esc" class="on">Escrituración</button><button data-m="brk">Cartera Brokers</button></nav>
     <div class="user">Usuario <input id="usuario" placeholder="Tu nombre" autocomplete="name"></div>
     <div class="hactions">
       <button class="btn" id="btnCargar" title="Cargar Excel de Control de Negocios o un respaldo de seguimiento">Cargar archivos</button>
@@ -172,6 +233,7 @@ table.mini td,table.mini th{padding:4px 6px;border-bottom:1px solid var(--border
     <div><button class="btn primary" id="btnCargar2">Seleccionar archivos</button></div>
   </section>
 
+  <!-- ===== MENÚ ESCRITURACIÓN ===== -->
   <section id="app" hidden>
     <div class="funnel" id="funnel"></div>
     <div class="toolbar">
@@ -189,13 +251,37 @@ table.mini td,table.mini th{padding:4px 6px;border-bottom:1px solid var(--border
       <div class="seg" id="vista"><button data-v="tablero" class="on">Tablero</button><button data-v="lista">Lista</button></div>
       <span class="count" id="conteo"></span>
     </div>
+    <div class="hint" style="margin:-4px 0 10px">Arrastra una tarjeta a la columna siguiente para avanzar: se pedirán los datos obligatorios de esa etapa. Arrastrarla hacia atrás pide un motivo.</div>
     <div id="tablero" class="board"></div>
     <div id="lista" class="tablewrap" hidden></div>
+  </section>
+
+  <!-- ===== MENÚ CARTERA BROKERS ===== -->
+  <section id="brk" hidden>
+    <div class="toolbar">
+      <select id="bBroker" title="Broker" style="font-weight:600"></select>
+      <input type="search" id="bQ" placeholder="Buscar por nombre, RUT, depto. o ID…">
+      <select id="bEstado" title="Estado del negocio"><option value="Vigente">Negocios vigentes</option><option value="">Todos los negocios</option><option value="Renunciado">Renunciados</option></select>
+      <select id="bCred" title="Estado del crédito"></select>
+      <select id="bFog" title="Cambio por FOGAES"><option value="">FOGAES: todos</option><option value="Sí">Cambia por FOGAES</option><option value="No">No cambia</option></select>
+      <label class="check"><input type="checkbox" id="bFalt"> Solo con datos pendientes</label>
+      <span class="count" id="bConteo"></span>
+    </div>
+    <div class="toolbar">
+      <span class="hint">Los cambios se guardan al salir de cada celda y se ven también en Escrituración.</span>
+      <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="bPdf">Imprimir / PDF para brokers</button>
+        <button class="btn primary" id="bXls">Excel para brokers</button>
+      </span>
+    </div>
+    <div id="bTabla" class="tablewrap"></div>
   </section>
 </main>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" hidden></aside>
+<div class="modal" id="modal" hidden><div class="mbox" id="mbox"></div></div>
+<div id="print"></div>
 <input type="file" id="file" accept=".xlsx,.xlsm,.xls" multiple hidden>
 <div id="loading" class="loading" hidden><div>Leyendo archivos…</div></div>
 
@@ -216,7 +302,9 @@ const PASOS = [
   {n:5, t:'Firma de la escritura por la inmobiliaria', d:'Si todo está conforme, firma la inmobiliaria.', col:'Firma inmobiliaria'},
   {n:6, t:'Entrega del departamento', d:'Se coordina la entrega una vez cumplidas las condiciones.', col:'Entrega'}
 ];
+const COLUMNAS = [...PASOS.map((p,j) => `${p.n} · ${p.col}`), '✓ Entregados'];   // columna k = pasos 1..k completos
 const ESTADOS_GESTION = ['Activo','Esperando al cliente','Esperando al banco','Esperando notaría','Problema','En pausa'];
+const ESTADOS_CREDITO = ['Sin solicitar','En evaluación','Pre-aprobado','Aprobado','Rechazado','No aplica'];
 const LS_KEY = 'umbrales_escrituracion_v1';
 
 /* =========================================================
@@ -235,27 +323,84 @@ function toISO(v){
 const fFecha = iso => iso ? iso.slice(8,10)+'-'+iso.slice(5,7)+'-'+iso.slice(0,4) : '';
 function fFechaHora(iso){ if(!iso) return ''; const d = new Date(iso); return d.toLocaleDateString('es-CL')+' '+d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }
 const n = v => (typeof v === 'number' && isFinite(v)) ? v : (v == null || v === '' ? 0 : (isFinite(+String(v).replace(',','.')) ? +String(v).replace(',','.') : 0));
+const r2 = v => Math.round(n(v)*100)/100;
 const fUF = v => n(v).toLocaleString('es-CL',{minimumFractionDigits:2,maximumFractionDigits:2});
 const txt = v => { if (v == null) return ''; const s = String(v).trim(); return (s === '0' || s === '-' ) ? '' : s; };
 function diasDesde(iso){ if(!iso) return null; return Math.floor((Date.parse(hoyISO()) - Date.parse(iso.slice(0,10)))/86400000); }
 function fTel(v){ const s = String(v ?? '').replace(/\D/g,''); if(!s) return ''; if(s.length===11 && s.startsWith('569')) return `+56 9 ${s.slice(3,7)} ${s.slice(7)}`; return '+'+s; }
-function toast(m){ const t = document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),2600); }
+function toast(m){ const t = document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),3200); }
 const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 
 /* =========================================================
-   ESTADO PERSISTENTE (seguimiento)
+   ESTADO PERSISTENTE (seguimiento) — compatible con la versión anterior
    ========================================================= */
-let SEG = { version:1, usuario:'', clientes:{}, cambiosSinRespaldo:0, ultimoRespaldo:'' };
-function cargarSeg(){ try { const s = localStorage.getItem(LS_KEY); if (s) SEG = Object.assign(SEG, JSON.parse(s)); } catch(e){ console.warn(e); } }
+let SEG = { version:2, usuario:'', clientes:{}, cambiosSinRespaldo:0, ultimoRespaldo:'' };
+function cargarSeg(){ try { const s = localStorage.getItem(LS_KEY); if (s) SEG = Object.assign(SEG, JSON.parse(s)); SEG.version = 2; } catch(e){ console.warn(e); } }
 function guardarSeg(){ try { localStorage.setItem(LS_KEY, JSON.stringify(SEG)); } catch(e){ banner('warn','No se pudo guardar en este navegador. Exporta el seguimiento ahora para no perder cambios.'); } actualizarPend(); }
 function segDe(key){
   if (!SEG.clientes[key]) SEG.clientes[key] = { pasos:{}, gestion:'Activo', proxAccion:'', fechaCompromiso:'', datos:{}, validacion:{}, bitacora:[], updatedAt:'' };
-  return SEG.clientes[key];
+  const s = SEG.clientes[key]; s.datos = s.datos || {}; s.validacion = s.validacion || {}; s.bitacora = s.bitacora || []; s.pasos = s.pasos || {};
+  return s;
 }
-function tocar(key, logTexto, tipo){
+function registrar(key, entrada){
   const s = segDe(key); s.updatedAt = ahoraISO();
-  if (logTexto) s.bitacora.unshift({ t: s.updatedAt, u: SEG.usuario || '', tipo: tipo || 'cambio', texto: logTexto });
+  if (entrada) s.bitacora.unshift(Object.assign({ t: s.updatedAt, u: SEG.usuario || '', tipo:'cambio' }, entrada));
   SEG.cambiosSinRespaldo++; guardarSeg();
+}
+function tocar(key, logTexto, tipo){ registrar(key, logTexto ? { texto: logTexto, tipo: tipo || 'cambio' } : null); }
+
+/* =========================================================
+   FICHA COMPARTIDA (Escrituración + Cartera Brokers)
+   Un solo registro por cliente: SEG.clientes[key].datos
+   ========================================================= */
+const CAMPOS = {
+  broker:          { label:'Broker',                          def:c => c.vendedor === 'Directo' ? 'Venta directa' : (c.vendedor || 'Sin broker') },
+  fogaes:          { label:'¿Cambia de unidad por FOGAES?',   def:() => 'No' },
+  deptoNuevo:      { label:'Departamento nuevo',              def:() => '' },
+  estacs:          { label:'Estacionamientos',                def:c => c.estac },
+  bodegas:         { label:'Bodegas',                         def:c => c.bodega },
+  precioEscritura: { label:'Precio de escritura (UF)',        num:true, def:c => c.precio },
+  incobrable:      { label:'Monto incobrable (UF)',           num:true, def:c => c.incobrable },
+  banco:           { label:'Banco del crédito',               def:c => (c.avanceExcel?.banco && c.avanceExcel.banco !== 'Por definir') ? c.avanceExcel.banco : '' },
+  credEstado:      { label:'Estado del crédito',              def:c => c.credito > 0 ? 'Sin solicitar' : 'No aplica' },
+  credMonto:       { label:'Monto del crédito (UF)',          num:true, def:c => c.credito },
+  observaciones:   { label:'Observaciones',                   def:() => '' },
+  preparadaPor:    { label:'Escritura preparada por',         def:() => '' },
+  ejecutivo:       { label:'Ejecutivo/a banco',               def:() => '' },
+  notaria:         { label:'Notaría',                         def:() => '' },
+  fechaEstimada:   { label:'Fecha agendada de firma',         def:() => '', fecha:true },
+  repertorio:      { label:'N° repertorio',                   def:() => '' },
+  fechaEntregaCoord:{ label:'Fecha coordinada de entrega',    def:() => '', fecha:true },
+  acta:            { label:'Acta de entrega',                 def:() => '' }
+};
+const cli = key => CLIENTES.find(x => x.key === key);
+function val(c, campo){
+  const s = SEG.clientes[c.key], v = s?.datos?.[campo];
+  return (v !== undefined && v !== null) ? v : (CAMPOS[campo]?.def(c) ?? '');
+}
+const fVal = (campo, v) => CAMPOS[campo]?.num ? fUF(v) : CAMPOS[campo]?.fecha ? fFecha(v) : (v === '' || v == null ? '(vacío)' : String(v));
+function montoContado(c){ return n(val(c,'precioEscritura')) - n(val(c,'credMonto')) - n(val(c,'incobrable')) - c.ahorro - c.subsidio; }
+function setCampo(key, campo, nuevo, origen){
+  const c = cli(key); const s = segDe(key);
+  if (CAMPOS[campo]?.num) nuevo = (nuevo === '' || nuevo == null) ? 0 : Math.round(n(nuevo)*100)/100; else nuevo = String(nuevo ?? '').trim();
+  const antes = c ? val(c, campo) : s.datos[campo];
+  if (String(antes ?? '') === String(nuevo)) return false;
+  s.datos[campo] = nuevo; s.datos.fichaActualizada = ahoraISO();
+  registrar(key, { tipo:'campo', campo, antes, despues:nuevo, origen, texto:`${CAMPOS[campo]?.label || campo}: ${fVal(campo, antes)} → ${fVal(campo, nuevo)}` });
+  if (campo === 'fogaes' && nuevo !== 'Sí' && c && val(c,'deptoNuevo')) setCampo(key, 'deptoNuevo', '', origen);
+  return true;
+}
+function pendientesFicha(c){
+  const out = [];
+  if (!txt(val(c,'broker'))) out.push('Broker');
+  if (val(c,'fogaes') === 'Sí' && !txt(val(c,'deptoNuevo'))) out.push('Departamento nuevo');
+  if (n(val(c,'precioEscritura')) <= 0) out.push('Precio de escritura');
+  if (n(val(c,'credMonto')) > 0){
+    if (!txt(val(c,'banco'))) out.push('Banco del crédito');
+    if (!val(c,'credEstado') || val(c,'credEstado') === 'Sin solicitar') out.push('Estado del crédito');
+  }
+  if (montoContado(c) < -CONFIG.TOLERANCIA_UF) out.push('Montos (contado negativo)');
+  return out;
 }
 
 /* =========================================================
@@ -264,10 +409,9 @@ function tocar(key, logTexto, tipo){
 const IDB = { db:null,
   open(){ return new Promise(res => { try { const r = indexedDB.open('umbrales_excel', 1); r.onupgradeneeded = () => r.result.createObjectStore('archivos'); r.onsuccess = () => { this.db = r.result; res(true); }; r.onerror = () => res(false); } catch(e){ res(false); } }); },
   put(k, v){ return new Promise(res => { if(!this.db) return res(false); try { const tx = this.db.transaction('archivos','readwrite'); tx.objectStore('archivos').put(v,k); tx.oncomplete = () => res(true); tx.onerror = () => res(false); } catch(e){ res(false); } }); },
-  all(){ return new Promise(res => { if(!this.db) return res([]); try { const out=[]; const tx = this.db.transaction('archivos'); const c = tx.objectStore('archivos').openCursor(); c.onsuccess = e => { const cur = e.target.result; if (cur){ out.push(cur.value); cur.continue(); } else res(out); }; c.onerror = () => res([]); } catch(e){ res([]); } }); },
-  del(k){ return new Promise(res => { if(!this.db) return res(false); try { const tx = this.db.transaction('archivos','readwrite'); tx.objectStore('archivos').delete(k); tx.oncomplete = () => res(true); } catch(e){ res(false); } }); }
+  all(){ return new Promise(res => { if(!this.db) return res([]); try { const out=[]; const tx = this.db.transaction('archivos'); const c = tx.objectStore('archivos').openCursor(); c.onsuccess = e => { const cur = e.target.result; if (cur){ out.push(cur.value); cur.continue(); } else res(out); }; c.onerror = () => res([]); } catch(e){ res([]); } }); }
 };
-let FUENTES = {};   // grupo -> {nombre, fechaArchivo, cargado, buffer}
+let FUENTES = {};   // grupo -> {nombre, fechaArchivo, cargado, n}
 let CLIENTES = [];  // lista combinada
 
 function detectarGrupo(nombre){
@@ -336,9 +480,7 @@ async function leerArchivo(file){
   const wb = XLSX.read(buf, { type:'array', cellDates:true, sheets:['Negocios','Pagos','Avance Escrituración','_respaldo'] });
   if (wb.Sheets['_respaldo']) { importarSeguimiento(wb); return 'seguimiento'; }
   let grupo = detectarGrupo(file.name);
-  if (!grupo) {
-    grupo = (prompt(`¿Qué edificios corresponden a "${file.name}"? (ej. AyB, CyD, EyF)`, '') || '').trim();
-  }
+  if (!grupo) grupo = (prompt(`¿Qué edificios corresponden a "${file.name}"? (ej. AyB, CyD, EyF)`, '') || '').trim();
   const clientes = procesarLibro(wb, grupo);   // valida estructura
   FUENTES[grupo] = { nombre:file.name, fechaArchivo:file.lastModified ? new Date(file.lastModified).toISOString() : '', cargado: ahoraISO(), n: clientes.length };
   await IDB.put(grupo || '_', { grupo, nombre:file.name, fechaArchivo:FUENTES[grupo].fechaArchivo, cargado:FUENTES[grupo].cargado, buffer:buf });
@@ -393,9 +535,9 @@ function info(c){
 }
 
 /* =========================================================
-   FILTROS Y VISTAS
+   MENÚ ESCRITURACIÓN: FILTROS, TABLERO Y LISTA
    ========================================================= */
-let FILTRO_COL = null, VISTA = 'tablero', ORDEN = {c:'id', d:1};
+let MENU = 'esc', FILTRO_COL = null, VISTA = 'tablero', ORDEN = {c:'id', d:1};
 function filtrados(){
   const q = norm($('#q').value), est = $('#fEstado').value, eta = $('#fEtapa').value, com = $('#fCompra').value, gr = $('#fGrupo').value, al = $('#fAlerta').value;
   return CLIENTES.map(c => ({c, i:info(c)})).filter(({c,i}) => {
@@ -408,7 +550,7 @@ function filtrados(){
     if (al === 'vencido' && !i.vencido) return false;
     if (al === 'saldo' && !(i.saldoPend || i.pemPend)) return false;
     if (al === 'problema' && !i.problema) return false;
-    if (q && !norm([c.id,c.nombre,c.rut,c.depto,c.estac,c.bodega,c.mail,i.s.datos?.banco].join(' ')).includes(q)) return false;
+    if (q && !norm([c.id,c.nombre,c.rut,c.depto,c.estac,c.bodega,c.mail,val(c,'banco'),val(c,'broker'),val(c,'deptoNuevo')].join(' ')).includes(q)) return false;
     return true;
   });
 }
@@ -422,6 +564,7 @@ function chipsAlerta(c,i){
     if (i.saldoPend) out.push(`<span class="badge warn">Saldo ${fUF(c.saldoCliente)} UF</span>`);
     if (i.pemPend) out.push('<span class="badge warn">PEM pendiente</span>');
   }
+  if (val(c,'fogaes') === 'Sí') out.push(`<span class="badge info">FOGAES → ${esc(val(c,'deptoNuevo') || '¿?')}</span>`);
   if (i.s.gestion && !['Activo','Problema'].includes(i.s.gestion)) out.push(`<span class="badge info">${esc(i.s.gestion)}</span>`);
   return out.join('');
 }
@@ -429,52 +572,182 @@ const dots = k => `<span class="dots" title="${k} de 6 pasos">${[1,2,3,4,5,6].ma
 const unidades = c => [c.depto && 'Depto '+c.depto, c.estac && 'E '+c.estac, c.bodega && 'B '+c.bodega].filter(Boolean).join(' · ');
 
 function pintarFunnel(lista){
-  const cols = [...PASOS.map((p,j) => ({k:j, l:`${p.n} · ${p.col}`})), {k:6, l:'Entregados'}];
-  const cnt = cols.map(x => lista.filter(o => o.i.k === x.k).length);
+  const cnt = COLUMNAS.map((x,k) => lista.filter(o => o.i.k === k).length);
   const nAl = lista.filter(o => o.i.alerta).length;
-  $('#funnel').innerHTML = cols.map((x,j) => `<button class="kpi ${FILTRO_COL===x.k?'active':''}" data-k="${x.k}"><div class="n">${cnt[j]}</div><div class="l">${x.k<6?'Pendiente: ':''}${esc(x.l)}</div></button>`).join('')
+  $('#funnel').innerHTML = COLUMNAS.map((x,k) => `<button class="kpi ${FILTRO_COL===k?'active':''}" data-k="${k}"><div class="n">${cnt[k]}</div><div class="l">${k<6?'Pendiente: ':''}${esc(k<6?x:'Entregados')}</div></button>`).join('')
     + `<button class="kpi alert ${$('#fAlerta').value==='alerta'?'active':''}" data-alert="1"><div class="n">${nAl}</div><div class="l">Con alertas</div></button>`;
 }
 function pintarTablero(lista){
-  const cols = [...PASOS.map((p,j) => ({k:j, t:`${p.n} · ${p.col}`})), {k:6, t:'✓ Entregados'}];
-  $('#tablero').innerHTML = cols.filter(x => FILTRO_COL === null || FILTRO_COL === x.k).map(x => {
+  $('#tablero').innerHTML = COLUMNAS.map((t,k) => ({t,k})).filter(x => FILTRO_COL === null || FILTRO_COL === x.k).map(x => {
     const items = lista.filter(o => o.i.k === x.k).sort((a,b) => (b.i.alerta - a.i.alerta) || (b.i.diasEtapa ?? -1) - (a.i.diasEtapa ?? -1));
-    return `<div class="col"><h3><span>${esc(x.t)}</span><span class="badge muted">${items.length}</span></h3>${
-      items.map(({c,i}) => `<div class="card" data-key="${esc(c.key)}"><div class="t">${esc(c.nombre)}</div>
+    return `<div class="col" data-col="${x.k}"><h3><span>${esc(x.t)}</span><span class="badge muted">${items.length}</span></h3>${
+      items.map(({c,i}) => { const cm = n(val(c,'credMonto')) > 0;
+        return `<div class="card" draggable="true" data-key="${esc(c.key)}"><div class="t">${esc(c.nombre)}</div>
         <div class="s">${esc(c.grupo ? c.grupo+' · ' : '')}${esc(c.id)} · ${esc(unidades(c))}</div>
-        <div class="s">${esc(c.compra)}${i.s.datos?.banco ? ' · '+esc(i.s.datos.banco) : ''}</div>
+        <div class="s">${esc(val(c,'broker'))} · ${cm ? 'Crédito '+esc(val(c,'credEstado').toLowerCase()) : 'Contado'}${val(c,'banco') ? ' · '+esc(val(c,'banco')) : ''}</div>
         ${i.s.proxAccion ? `<div class="s">→ ${esc(i.s.proxAccion)}${i.s.fechaCompromiso ? ' ('+fFecha(i.s.fechaCompromiso)+')' : ''}</div>` : ''}
-        <div class="chips">${dots(i.k)}${chipsAlerta(c,i)}</div></div>`).join('') || '<div class="hint" style="padding:6px">Sin clientes</div>'
+        <div class="chips">${dots(i.k)}${chipsAlerta(c,i)}</div></div>`; }).join('') || '<div class="hint" style="padding:6px">Sin clientes</div>'
     }</div>`;
   }).join('');
 }
 function pintarLista(lista){
-  const cols = [['id','ID'],['nombre','Cliente'],['unid','Unidades'],['compra','Compra'],['banco','Banco'],['k','Avance'],['dias','Días en etapa'],['saldo','Saldo cliente UF'],['pem','PEM UF'],['prox','Próxima acción'],['comp','Compromiso'],['act','Actualizado']];
-  const val = ({c,i}, k) => ({id:c.key, nombre:c.nombre, unid:c.depto, compra:c.compra, banco:i.s.datos?.banco||'', k:i.k, dias:i.diasEtapa ?? -1, saldo:c.saldoCliente, pem:c.pem, prox:i.s.proxAccion||'', comp:i.s.fechaCompromiso||'', act:i.ultFecha||''})[k];
-  const l = lista.filter(o => FILTRO_COL === null || o.i.k === FILTRO_COL).sort((a,b) => { const x = val(a,ORDEN.c), y = val(b,ORDEN.c); return (x > y ? 1 : x < y ? -1 : 0) * ORDEN.d; });
+  const cols = [['id','ID'],['nombre','Cliente'],['unid','Unidades'],['broker','Broker'],['banco','Banco'],['cred','Crédito'],['k','Avance'],['dias','Días en etapa'],['saldo','Saldo cliente UF'],['pem','PEM UF'],['prox','Próxima acción'],['act','Actualizado']];
+  const v = ({c,i}, k) => ({id:c.key, nombre:c.nombre, unid:c.depto, broker:val(c,'broker'), banco:val(c,'banco'), cred:val(c,'credEstado'), k:i.k, dias:i.diasEtapa ?? -1, saldo:c.saldoCliente, pem:c.pem, prox:i.s.proxAccion||'', act:i.ultFecha||''})[k];
+  const l = lista.filter(o => FILTRO_COL === null || o.i.k === FILTRO_COL).sort((a,b) => { const x = v(a,ORDEN.c), y = v(b,ORDEN.c); return (x > y ? 1 : x < y ? -1 : 0) * ORDEN.d; });
   $('#lista').innerHTML = `<table class="list"><thead><tr>${cols.map(([k,t]) => `<th data-s="${k}" class="${['saldo','pem','dias'].includes(k)?'num':''}">${t}${ORDEN.c===k?(ORDEN.d>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead><tbody>${
     l.map(({c,i}) => `<tr data-key="${esc(c.key)}"><td>${esc(c.grupo?c.grupo+'/':'')}${esc(c.id)}</td><td><b>${esc(c.nombre)}</b><div class="chips">${chipsAlerta(c,i)}</div></td>
-      <td>${esc(unidades(c))}</td><td>${esc(c.compra)}</td><td>${esc(i.s.datos?.banco||'')}</td>
+      <td>${esc(unidades(c))}</td><td>${esc(val(c,'broker'))}</td><td>${esc(val(c,'banco'))}</td>
+      <td>${n(val(c,'credMonto'))>0 ? esc(val(c,'credEstado'))+' · '+fUF(val(c,'credMonto'))+' UF' : 'Contado'}</td>
       <td>${dots(i.k)} <span class="hint">${i.k<6 ? esc(PASOS[i.k].col) : 'Entregado'}</span></td>
       <td class="num">${i.diasEtapa ?? ''}</td><td class="num">${fUF(c.saldoCliente)}</td><td class="num">${fUF(c.pem)}</td>
-      <td>${esc(i.s.proxAccion||'')}</td><td>${fFecha(i.s.fechaCompromiso||'')}</td><td>${fFecha(i.ultFecha)}</td></tr>`).join('')
+      <td>${esc(i.s.proxAccion||'')}${i.s.fechaCompromiso?' <span class="hint">('+fFecha(i.s.fechaCompromiso)+')</span>':''}</td><td>${fFecha(i.ultFecha)}</td></tr>`).join('')
     || `<tr><td colspan="12" class="empty">No hay clientes con estos filtros</td></tr>`}</tbody></table>`;
 }
+
+/* =========================================================
+   MENÚ CARTERA BROKERS
+   ========================================================= */
+function brokersDisponibles(){ return [...new Set(CLIENTES.map(c => txt(val(c,'broker'))).filter(Boolean))].sort((a,b) => a.localeCompare(b,'es')); }
+function filtradosBrokers(){
+  const br = $('#bBroker').value, q = norm($('#bQ').value), est = $('#bEstado').value, cr = $('#bCred').value, fo = $('#bFog').value, fa = $('#bFalt').checked;
+  return CLIENTES.filter(c => {
+    if (br && val(c,'broker') !== br) return false;
+    if (est && c.estado !== est) return false;
+    if (cr && val(c,'credEstado') !== cr) return false;
+    if (fo && val(c,'fogaes') !== fo) return false;
+    if (fa && !pendientesFicha(c).length) return false;
+    if (q && !norm([c.id,c.nombre,c.rut,c.depto,val(c,'deptoNuevo'),val(c,'banco')].join(' ')).includes(q)) return false;
+    return true;
+  }).sort((a,b) => String(val(a,'broker')).localeCompare(String(val(b,'broker')),'es') || a.key.localeCompare(b.key));
+}
+const BCOLS = [
+  ['broker','Broker','sel'], ['cliente','Cliente','ro'], ['deptoActual','Depto. actual','ro'], ['fogaes','¿Cambia por FOGAES?','sel'], ['deptoNuevo','Depto. nuevo','txt'],
+  ['estacs','Estacionamientos','txt'], ['bodegas','Bodegas','txt'], ['precioEscritura','Precio escritura UF','num'], ['incobrable','Monto incobrable UF','num'],
+  ['banco','Banco del crédito','txt'], ['credEstado','Estado del crédito','sel'], ['credMonto','Monto crédito UF','num'], ['contado','Pagará al contado UF','calc'],
+  ['etapa','Etapa escrituración','ro'], ['observaciones','Observaciones','txt'], ['act','Actualización de datos','ro']
+];
+function celdaBroker(c, col){
+  const [id,, tipo] = col; const v = ['ro','calc'].includes(tipo) ? null : val(c,id);
+  const falta = (id === 'deptoNuevo' && val(c,'fogaes') === 'Sí' && !txt(v)) || (id === 'banco' && n(val(c,'credMonto')) > 0 && !txt(v)) || (id === 'credEstado' && n(val(c,'credMonto')) > 0 && v === 'Sin solicitar');
+  const cls = falta ? ' class="falta"' : '';
+  if (id === 'cliente') return `<td class="cliente"><b>${esc(c.nombre)}</b><span class="hint">${esc(c.grupo?c.grupo+'/':'')}${esc(c.id)} · ${esc(c.rut)}</span></td>`;
+  if (id === 'deptoActual') return `<td class="ro">${esc(c.depto)}</td>`;
+  if (id === 'etapa'){ const k = info(c).k; return `<td class="ro" style="white-space:nowrap">${dots(k)} <span class="hint">${k<6?esc(PASOS[k].col):'Entregado'}</span></td>`; }
+  if (id === 'act') return `<td class="ro" data-c="act" style="white-space:nowrap">${fFechaHora(SEG.clientes[c.key]?.datos?.fichaActualizada || '')}</td>`;
+  if (id === 'contado'){ const m = montoContado(c); return `<td class="num" data-c="contado"><span class="${m < -CONFIG.TOLERANCIA_UF ? 'negativo' : ''}">${fUF(m)}</span></td>`; }
+  if (id === 'broker') return `<td${cls}><input data-f="broker" list="dlBrokers" value="${esc(v)}" style="min-width:110px"></td>`;
+  if (id === 'fogaes') return `<td${cls}><select data-f="fogaes" style="min-width:64px"><option ${v==='No'?'selected':''}>No</option><option ${v==='Sí'?'selected':''}>Sí</option></select></td>`;
+  if (id === 'credEstado') return `<td${cls}><select data-f="credEstado" style="min-width:120px">${ESTADOS_CREDITO.map(o => `<option ${v===o?'selected':''}>${o}</option>`).join('')}</select></td>`;
+  if (tipo === 'num') return `<td${cls}><input type="number" step="0.01" min="0" data-f="${id}" value="${r2(v)}" style="min-width:90px"></td>`;
+  const extra = id === 'deptoNuevo' ? ` list="dlDeptos" ${val(c,'fogaes') !== 'Sí' ? 'disabled placeholder="—"' : 'placeholder="Obligatorio"'}` : id === 'banco' ? ' list="bancos"' : '';
+  const w = id === 'observaciones' ? 200 : id === 'banco' ? 130 : 80;
+  return `<td${cls}><input data-f="${id}" value="${esc(v)}"${extra} style="min-width:${w}px"></td>`;
+}
+function pintarBrokers(){
+  const sel = $('#bBroker'), prev = sel.value, lista = brokersDisponibles();
+  sel.innerHTML = `<option value="">Todos los brokers</option>` + lista.map(b => `<option ${b===prev?'selected':''}>${esc(b)}</option>`).join('');
+  if (prev && !lista.includes(prev)) sel.value = '';
+  const cr = $('#bCred'), prevCr = cr.value;
+  cr.innerHTML = `<option value="">Crédito: todos los estados</option>` + ESTADOS_CREDITO.map(o => `<option ${o===prevCr?'selected':''}>${o}</option>`).join('');
+  const filas = filtradosBrokers();
+  const conPend = filas.filter(c => pendientesFicha(c).length).length;
+  $('#bConteo').innerHTML = `${filas.length} clientes${conPend ? ` · <b style="color:var(--danger)">${conPend} con datos pendientes</b>` : ''}`;
+  const cols = BCOLS.filter(c => !(c[0] === 'broker' && sel.value));
+  $('#bTabla').innerHTML = `<table class="edit"><thead><tr>${cols.map(c => `<th class="${['num','calc'].includes(c[2])?'num':''}">${c[1]}</th>`).join('')}</tr></thead><tbody>${
+    filas.map(c => `<tr data-key="${esc(c.key)}" class="${pendientesFicha(c).length?'conpend':''}" title="${esc(pendientesFicha(c).length ? 'Pendiente: '+pendientesFicha(c).join(', ') : '')}">${cols.map(col => celdaBroker(c,col)).join('')}</tr>`).join('')
+    || `<tr><td colspan="${cols.length}" class="empty">No hay clientes con estos filtros</td></tr>`}</tbody></table>`;
+}
+function llenarListas(){
+  $('#dlBrokers').innerHTML = brokersDisponibles().map(b => `<option value="${esc(b)}">`).join('');
+  $('#dlDeptos').innerHTML = [...new Set(CLIENTES.map(c => c.depto).filter(Boolean))].sort().map(d => `<option value="${esc(d)}">`).join('');
+}
+function onBrokerEdit(e){
+  const t = e.target, f = t.dataset.f; if (!f) return;
+  const tr = t.closest('tr'), key = tr.dataset.key, c = cli(key);
+  if (CAMPOS[f]?.num && n(t.value) < 0){ toast('El monto no puede ser negativo'); t.value = r2(val(c,f)); return; }
+  if (f === 'fogaes' && t.value === 'Sí') toast('Indica el departamento nuevo: es obligatorio cuando cambia por FOGAES');
+  if (!setCampo(key, f, t.value, 'Cartera Brokers')) return;
+  // actualiza solo esa fila, sin perder el foco
+  const td = t.closest('td'); td.classList.add('saved'); setTimeout(() => td.classList.remove('saved'), 900);
+  const dn = tr.querySelector('[data-f="deptoNuevo"]');
+  if (dn){ const si = val(c,'fogaes') === 'Sí'; dn.disabled = !si; dn.placeholder = si ? 'Obligatorio' : '—'; if (!si) dn.value = ''; }
+  tr.querySelectorAll('[data-f]').forEach(inp => { const id = inp.dataset.f; const falta = (id === 'deptoNuevo' && val(c,'fogaes') === 'Sí' && !txt(val(c,id))) || (id === 'banco' && n(val(c,'credMonto')) > 0 && !txt(val(c,id))) || (id === 'credEstado' && n(val(c,'credMonto')) > 0 && val(c,id) === 'Sin solicitar'); inp.closest('td').classList.toggle('falta', falta); });
+  const m = montoContado(c), tc = tr.querySelector('[data-c="contado"]'); if (tc) tc.innerHTML = `<span class="${m < -CONFIG.TOLERANCIA_UF ? 'negativo' : ''}">${fUF(m)}</span>`;
+  const ta = tr.querySelector('[data-c="act"]'); if (ta) ta.textContent = fFechaHora(SEG.clientes[key].datos.fichaActualizada);
+  const p = pendientesFicha(c); tr.classList.toggle('conpend', p.length > 0); tr.title = p.length ? 'Pendiente: '+p.join(', ') : '';
+  const filas = filtradosBrokers(), conPend = filas.filter(x => pendientesFicha(x).length).length;
+  $('#bConteo').innerHTML = `${filas.length} clientes${conPend ? ` · <b style="color:var(--danger)">${conPend} con datos pendientes</b>` : ''}`;
+  if (f === 'broker') pintarBrokers();
+  pintarBanners();
+}
+
+/* ---------- reportes para brokers ---------- */
+const RCOLS = [
+  ['Id Negocio', c => (c.grupo?c.grupo+'/':'')+c.id], ['Cliente', c => c.nombre], ['RUT', c => c.rut], ['Depto. actual', c => c.depto],
+  ['¿Cambia por FOGAES?', c => val(c,'fogaes')], ['Depto. nuevo', c => val(c,'fogaes')==='Sí' ? val(c,'deptoNuevo') : '—', 0, 'Departamento nuevo'],
+  ['Estacionamientos', c => val(c,'estacs')], ['Bodegas', c => val(c,'bodegas')],
+  ['Precio escritura UF', c => n(val(c,'precioEscritura')), 1, 'Precio de escritura'], ['Monto incobrable UF', c => n(val(c,'incobrable')), 1],
+  ['Banco del crédito', c => val(c,'banco'), 0, 'Banco del crédito'], ['Estado del crédito', c => val(c,'credEstado'), 0, 'Estado del crédito'], ['Monto crédito UF', c => n(val(c,'credMonto')), 1],
+  ['Pagará al contado UF', c => Math.round(montoContado(c)*100)/100, 1], ['Observaciones', c => val(c,'observaciones')],
+  ['Actualización de datos', c => fFecha((SEG.clientes[c.key]?.datos?.fichaActualizada || '').slice(0,10))]
+];
+function gruposReporte(){
+  const filas = filtradosBrokers(); const out = {};
+  for (const c of filas) (out[val(c,'broker') || 'Sin broker'] = out[val(c,'broker') || 'Sin broker'] || []).push(c);
+  return out;
+}
+function imprimirBrokers(){
+  const g = gruposReporte(); if (!Object.keys(g).length) return toast('No hay clientes con estos filtros');
+  const hoy = fFecha(hoyISO());
+  $('#print').innerHTML = Object.entries(g).map(([b, cs]) => `<section class="rep">
+    <h1>Reporte de clientes · ${esc(b)}</h1>
+    <div class="sub">Condominio Espacio Las Tablas Curauma · Inmobiliaria Umbrales Quince SpA · Emitido el ${hoy} · ${cs.length} clientes · ${cs.filter(c => pendientesFicha(c).length).length} con datos pendientes</div>
+    <p class="nota">Por favor complete los datos pendientes (en amarillo) o corrija los que no correspondan en la columna “Corrección del broker”, y devuelva este reporte firmado.</p>
+    <table><thead><tr>${RCOLS.map(r => `<th>${esc(r[0])}</th>`).join('')}<th>Corrección del broker</th></tr></thead><tbody>
+    ${cs.map(c => { const pend = pendientesFicha(c); return `<tr>${RCOLS.map(r => { const v = r[1](c); const vacio = r[3] && pend.includes(r[3]); return `<td class="${vacio?'vacio':''}" style="${r[2]?'text-align:right;white-space:nowrap':''}${r[0]==='Cliente'?';min-width:110px':''}">${r[2] ? fUF(v) : esc(v)}</td>`; }).join('')}<td class="corr"></td></tr>`; }).join('')}
+    </tbody></table>
+    <div class="firma"><span>Nombre del broker</span><span>Firma</span><span>Fecha</span></div></section>`).join('');
+  window.print();
+}
+function excelBrokers(){
+  const g = gruposReporte(); if (!Object.keys(g).length) return toast('No hay clientes con estos filtros');
+  const wb = XLSX.utils.book_new(); const hoy = fFecha(hoyISO()); const usados = new Set();
+  for (const [b, cs] of Object.entries(g)){
+    const head = [...RCOLS.map(r => r[0]), 'Corrección del broker', 'Comentarios del broker'];
+    const aoa = [[`Reporte de clientes · ${b}`], [`Condominio Espacio Las Tablas Curauma · Inmobiliaria Umbrales Quince SpA · Emitido el ${hoy} · ${cs.length} clientes`],
+      ['Complete los datos vacíos o corrija los que no correspondan en las columnas "Corrección del broker" y "Comentarios del broker", y devuelva este archivo.'], [], head,
+      ...cs.map(c => [...RCOLS.map(r => r[1](c)), '', ''])];
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = head.map(h => ({wch: h === 'Cliente' ? 34 : h === 'Observaciones' || h.startsWith('Correc') || h.startsWith('Coment') ? 36 : Math.max(11, h.length + 2)}));
+    ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:head.length-1}},{s:{r:1,c:0},e:{r:1,c:head.length-1}},{s:{r:2,c:0},e:{r:2,c:head.length-1}}];
+    ws['!autofilter'] = { ref: XLSX.utils.encode_range({s:{r:4,c:0},e:{r:4+cs.length,c:head.length-1}}) };
+    let nom = b.replace(/[\\/?*\[\]:]/g,' ').slice(0,31) || 'Broker'; while (usados.has(nom)) nom = nom.slice(0,28) + ' ' + usados.size; usados.add(nom);
+    XLSX.utils.book_append_sheet(wb, ws, nom);
+  }
+  const nb = Object.keys(g).length === 1 ? Object.keys(g)[0] : 'Todos los brokers';
+  XLSX.writeFile(wb, `Reporte clientes ${nb.replace(/[\\/:*?"<>|]/g,'')} ${hoyISO()}.xlsx`);
+  toast('Reporte para brokers descargado');
+}
+
+/* =========================================================
+   PINTADO GENERAL
+   ========================================================= */
 function pintarTodo(){
   const hay = CLIENTES.length > 0;
-  $('#vacio').hidden = hay; $('#app').hidden = !hay;
+  $('#vacio').hidden = hay; $('#app').hidden = !hay || MENU !== 'esc'; $('#brk').hidden = !hay || MENU !== 'brk';
   const grupos = Object.keys(FUENTES);
   const sel = $('#fGrupo'), prev = sel.value;
   sel.innerHTML = `<option value="">Todos los edificios</option>` + grupos.map(g => `<option value="${esc(g)}">${esc(g || 'Sin grupo')}</option>`).join('');
   sel.value = grupos.includes(prev) ? prev : ''; sel.hidden = grupos.length < 2;
-  pintarBanners();
+  pintarBanners(); actualizarPend();
   if (!hay) return;
+  llenarListas();
+  if (MENU === 'brk') return pintarBrokers();
   const lista = filtrados();
   pintarFunnel(lista);
   $('#conteo').textContent = `${lista.length} clientes`;
   $('#tablero').hidden = VISTA !== 'tablero'; $('#lista').hidden = VISTA !== 'lista';
   if (VISTA === 'tablero') pintarTablero(lista); else pintarLista(lista);
-  actualizarPend();
 }
 let BANNERS_EXTRA = [];
 function banner(tipo, html){ BANNERS_EXTRA.push({tipo, html}); pintarBanners(); }
@@ -491,70 +764,194 @@ function pintarBanners(){
 function actualizarPend(){ const p = $('#pend'); p.hidden = !SEG.cambiosSinRespaldo; p.textContent = SEG.cambiosSinRespaldo; }
 
 /* =========================================================
-   FICHA DEL CLIENTE
+   CAMBIO DE ETAPA: formularios obligatorios
+   ========================================================= */
+const conCredito = vals => n(vals.credMonto) > 0;
+const FORM_PASO = {
+  1: { sub:'Pasa a “Firma del cliente”. Antes de la firma deben quedar registrados el estado y el monto del crédito.', campos: c => [
+      { id:'preparadaPor', tipo:'select', ops:['Banco','Inmobiliaria'], req:true, def: c.compra === 'Contado' ? 'Inmobiliaria' : 'Banco' },
+      { id:'credMonto', tipo:'number', req:true, hint:'0 si compra al contado' },
+      { id:'credEstado', tipo:'select', ops:ESTADOS_CREDITO, req:true,
+        validar:(v, vals) => conCredito(vals) ? (v === 'Aprobado' ? '' : 'Con crédito, debe estar Aprobado para pasar a firma') : (v === 'No aplica' ? '' : 'Sin crédito, el estado debe ser “No aplica”') },
+      { id:'banco', tipo:'text', list:'bancos', req: vals => conCredito(vals) },
+      { id:'ejecutivo', tipo:'text' },
+      { id:'notaria', tipo:'text', list:'notarias', req:true },
+      { id:'fechaEstimada', tipo:'date' },
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha en que la escritura quedó lista' } ] },
+  2: { sub:'Pasa a “Copia maestra”.', campos: c => [
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha en que firmó el cliente' },
+      { id:'repertorio', tipo:'text' } ] },
+  3: { sub:'Pasa a “Validación financiera”.', campos: c => [
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha de recepción de la copia maestra' } ] },
+  4: { sub:'Pasa a “Firma inmobiliaria”. Solo se avanza con ambas verificaciones confirmadas.', info: c => finHTML(c), campos: c => [
+      { id:'v_saldoOk', tipo:'check', req:true, label:`Saldo del precio verificado ${c.compra==='Contado'?'(pago al contado)':'(pagos que le corresponden al cliente)'}` },
+      { id:'v_pemOk', tipo:'check', req:true, label:`Puesta en marcha de UF ${CONFIG.UF_PUESTA_EN_MARCHA} verificada` },
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha de validación' } ] },
+  5: { sub:'Pasa a “Entrega”.', campos: c => [
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha de firma de la inmobiliaria' },
+      { id:'fechaEntregaCoord', tipo:'date' } ] },
+  6: { sub:'Pasa a “Entregados”.', campos: c => [
+      { id:'_fecha', tipo:'date', req:true, label:'Fecha de entrega del departamento' },
+      { id:'acta', tipo:'select', ops:['Firmada'], req:true } ] }
+};
+let MODAL = null;
+function cerrarModal(){ MODAL = null; $('#modal').hidden = true; }
+function valorInicial(c, s, paso, f){
+  if (f.id === '_fecha') return s.pasos[paso]?.fecha || hoyISO();
+  if (f.id.startsWith('v_')) return !!s.validacion[f.id.slice(2)];
+  const v = val(c, f.id);
+  return (v === '' || v == null) && f.def !== undefined ? f.def : v;
+}
+function campoHTML(f, v){
+  const lab = f.label || CAMPOS[f.id]?.label || f.id;
+  const req = (typeof f.req === 'function' || f.req) ? ' <span class="req">*</span>' : '';
+  if (f.tipo === 'check') return `<div class="field" data-fid="${f.id}"><label class="check" style="font-size:14px;color:var(--text)"><input type="checkbox" name="${f.id}" ${v?'checked':''}> ${esc(lab)}${req}</label><span class="err"></span></div>`;
+  let inp;
+  if (f.tipo === 'select') inp = `<select name="${f.id}"><option value=""></option>${f.ops.map(o => `<option ${String(v)===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  else if (f.tipo === 'number') inp = `<input type="number" step="0.01" min="0" name="${f.id}" value="${esc(v)}">`;
+  else if (f.tipo === 'date') inp = `<input type="date" name="${f.id}" value="${esc(v)}">`;
+  else inp = `<input name="${f.id}" value="${esc(v)}" ${f.list?`list="${f.list}"`:''}>`;
+  return `<div class="field" data-fid="${f.id}"><label>${esc(lab)}${req}</label>${inp}${f.hint?`<span class="hint">${esc(f.hint)}</span>`:''}<span class="err"></span></div>`;
+}
+function abrirFormPaso(key, paso){
+  const c = cli(key), s = segDe(key), def = FORM_PASO[paso], campos = def.campos(c);
+  MODAL = { tipo:'paso', key, paso, campos };
+  $('#mbox').innerHTML = `<div class="mhead"><h3>Paso ${paso}: ${esc(PASOS[paso-1].t)}</h3><div class="s">${esc(c.nombre)} · ${esc(c.id)} · ${esc(unidades(c))}</div></div>
+    <div class="mbody"><div class="hint">${esc(def.sub)} Los campos con <span class="req">*</span> son obligatorios.</div>
+      ${def.info ? def.info(c) : ''}
+      <div class="fields">${campos.map(f => campoHTML(f, valorInicial(c, s, paso, f))).join('')}</div>
+      <div class="field"><label>Nota del paso</label><textarea name="_nota" placeholder="Opcional">${esc(s.pasos[paso]?.nota || '')}</textarea></div>
+    </div>
+    <div class="mfoot"><button class="btn" data-m="cancelar">Cancelar</button><button class="btn primary" data-m="ok">Confirmar y avanzar</button></div>`;
+  $('#modal').hidden = false;
+  setTimeout(() => $('#mbox').querySelector('input,select')?.focus(), 30);
+}
+function abrirRetroceso(key, destino){
+  const c = cli(key), k = etapaActual(segDe(key));
+  MODAL = { tipo:'retro', key, destino };
+  $('#mbox').innerHTML = `<div class="mhead"><h3>Volver a “${esc(COLUMNAS[destino])}”</h3><div class="s">${esc(c.nombre)} · hoy en “${esc(COLUMNAS[k])}”</div></div>
+    <div class="mbody"><div class="hint">Se reabren los pasos ${destino+1} a ${k}. Sus datos y fechas se conservan en la ficha y en el historial.</div>
+      <div class="field" data-fid="_motivo"><label>Motivo <span class="req">*</span></label><textarea name="_motivo" placeholder="Ej. el banco pidió corregir la escritura"></textarea><span class="err"></span></div></div>
+    <div class="mfoot"><button class="btn" data-m="cancelar">Cancelar</button><button class="btn primary" data-m="ok">Confirmar</button></div>`;
+  $('#modal').hidden = false;
+}
+function confirmarModal(){
+  const box = $('#mbox'); const get = name => box.querySelector(`[name="${name}"]`);
+  box.querySelectorAll('.field').forEach(f => { f.classList.remove('bad'); const e = f.querySelector('.err'); if (e) e.textContent = ''; });
+  const err = (id, msg) => { const f = box.querySelector(`[data-fid="${id}"]`); if (f){ f.classList.add('bad'); f.querySelector('.err').textContent = msg; } };
+  const { key } = MODAL; const s = segDe(key), c = cli(key);
+  if (MODAL.tipo === 'retro'){
+    const motivo = get('_motivo').value.trim(); if (!motivo) return err('_motivo', 'Indica el motivo');
+    const desde = etapaActual(s);
+    for (let m = MODAL.destino + 1; m <= 6; m++) if (s.pasos[m]) s.pasos[m].done = false;
+    registrar(key, { tipo:'paso', origen:'Escrituración', texto:`Retrocedió de “${COLUMNAS[desde]}” a “${COLUMNAS[MODAL.destino]}”. Motivo: ${motivo}` });
+    cerrarModal(); refrescar(); toast('Etapa actualizada'); return;
+  }
+  const vals = {}; let ok = true;
+  for (const f of MODAL.campos){ const el = get(f.id); vals[f.id] = f.tipo === 'check' ? el.checked : el.value.trim(); }
+  for (const f of MODAL.campos){
+    const v = vals[f.id]; const req = typeof f.req === 'function' ? f.req(vals) : !!f.req;
+    if (req && (f.tipo === 'check' ? !v : v === '')){ err(f.id, f.tipo === 'check' ? 'Debe confirmarse para avanzar' : 'Obligatorio'); ok = false; continue; }
+    if (f.tipo === 'number' && v !== '' && n(v) < 0){ err(f.id, 'No puede ser negativo'); ok = false; continue; }
+    if (f.validar){ const m = f.validar(v, vals); if (m){ err(f.id, m); ok = false; } }
+  }
+  if (!ok) return;
+  const paso = MODAL.paso, desde = etapaActual(s), origen = `Escrituración (paso ${paso})`;
+  for (const f of MODAL.campos){
+    if (f.id === '_fecha') continue;
+    if (f.id.startsWith('v_')){ const k2 = f.id.slice(2); if (!!s.validacion[k2] !== vals[f.id]){ s.validacion[k2] = vals[f.id]; registrar(key, { tipo:'campo', campo:k2, antes:!vals[f.id]?'Sí':'No', despues:vals[f.id]?'Sí':'No', origen, texto:`${f.label}: ${vals[f.id]?'sí':'no'}` }); } continue; }
+    setCampo(key, f.id, vals[f.id], origen);
+  }
+  const nota = get('_nota').value.trim();
+  s.pasos[paso] = Object.assign({}, s.pasos[paso], { done:true, fecha: vals._fecha, nota: nota || s.pasos[paso]?.nota || '' });
+  registrar(key, { tipo:'paso', origen:'Escrituración', texto:`Avanzó de “${COLUMNAS[desde]}” a “${COLUMNAS[etapaActual(s)]}”: paso ${paso} completado el ${fFecha(vals._fecha)}${nota ? '. Nota: '+nota : ''}` });
+  cerrarModal(); refrescar(); toast(`${c.nombre.split(' ')[0]} avanzó a “${COLUMNAS[etapaActual(s)]}”`);
+}
+function moverA(key, destino){
+  const k = etapaActual(segDe(key));
+  if (destino === k) return;
+  if (destino === k + 1) return abrirFormPaso(key, destino);
+  if (destino > k + 1) return toast(`No se pueden saltar etapas: primero completa el paso ${k+1} (${PASOS[k].t}).`);
+  abrirRetroceso(key, destino);
+}
+function refrescar(){ if (ABIERTO){ const y = $('#drawer').scrollTop; pintarFicha(); $('#drawer').scrollTop = y; } pintarTodo(); }
+
+/* =========================================================
+   FICHA DEL CLIENTE (panel lateral)
    ========================================================= */
 let ABIERTO = null;
 function abrir(key){ ABIERTO = key; $('#drawer').hidden = false; $('#scrim').hidden = false; pintarFicha(); document.body.style.overflow='hidden'; }
 function cerrar(){ ABIERTO = null; $('#drawer').hidden = true; $('#scrim').hidden = true; document.body.style.overflow=''; pintarTodo(); }
 const kv = (k,v) => `<div class="kv"><span>${esc(k)}</span><span>${v}</span></div>`;
+function finHTML(c){
+  const i = info(c);
+  return `<div class="fin">
+    ${kv('Forma de compra', esc(c.compra))}${kv('Precio', fUF(c.precio)+' UF')}
+    ${kv('Pie (contado)', fUF(c.contado)+' UF')}${kv('Crédito hipotecario (Excel)', fUF(c.credito)+' UF')}
+    ${c.ahorro ? kv('Ahorro previo', fUF(c.ahorro)+' UF') : ''}${c.subsidio ? kv('Subsidio', fUF(c.subsidio)+' UF') : ''}
+    ${c.incobrable ? kv('Incobrable / bono pie', fUF(c.incobrable)+' UF') : ''}
+    ${kv('Cobrado a la fecha', fUF(c.cobrado)+' UF')}${kv('Saldo por cobrar (Excel)', fUF(c.saldoPorCobrar)+' UF')}
+    ${kv('Saldo a pagar por el cliente', `<b style="color:var(${i.saldoPend?'--danger':'--done'})">${fUF(c.saldoCliente)} UF</b>`)}
+    ${kv('Fondo Puesta en Marcha', `<b style="color:var(${i.pemPend?'--danger':'--done'})">${fUF(c.pem)} de ${CONFIG.UF_PUESTA_EN_MARCHA} UF</b>`)}
+  </div><div class="hint">Saldo a pagar por el cliente = Saldo por cobrar − crédito − ahorro previo − subsidio (montos del Excel). Confirma contra la cartola.</div>`;
+}
+const inpF = (c, id, opts={}) => {
+  const v = val(c, id), lab = CAMPOS[id].label;
+  if (opts.ops) return `<div class="field ${opts.cls||''}"><label>${esc(lab)}</label><select data-f="${id}">${opts.blank?'<option value=""></option>':''}${opts.ops.map(o => `<option ${String(v)===o?'selected':''}>${esc(o)}</option>`).join('')}</select></div>`;
+  const type = CAMPOS[id].num ? 'number" step="0.01" min="0' : CAMPOS[id].fecha ? 'date' : 'text';
+  return `<div class="field ${opts.cls||''}"><label>${esc(lab)}</label><input type="${type}" data-f="${id}" value="${esc(CAMPOS[id].num ? r2(v) : v)}" ${opts.list?`list="${opts.list}"`:''} ${opts.disabled?'disabled':''} placeholder="${esc(opts.ph||'')}"></div>`;
+};
 
 function pintarFicha(){
-  const c = CLIENTES.find(x => x.key === ABIERTO); if (!c) return cerrar();
-  const s = segDe(c.key), i = info(c), d = s.datos || (s.datos = {});
-  const sug = c.compra === 'Contado' ? 'Inmobiliaria' : 'Banco';
+  const c = cli(ABIERTO); if (!c) return cerrar();
+  const s = segDe(c.key), i = info(c);
+  const fog = val(c,'fogaes') === 'Sí', pend = pendientesFicha(c), m = montoContado(c);
   const pasoHTML = p => {
     const ps = s.pasos[p.n] || {};
     const actual = i.k + 1 === p.n;
-    let extra = '';
-    if (p.n === 1) extra = `<div class="fields">
-        <div class="field"><label>Preparada por</label><select data-d="preparadaPor">${['', 'Banco','Inmobiliaria'].map(o => `<option ${ (d.preparadaPor||'')===o?'selected':''}>${o}</option>`).join('')}</select><span class="hint">Sugerido: ${sug}</span></div>
-        <div class="field"><label>Banco</label><input data-d="banco" value="${esc(d.banco||'')}" list="bancos" placeholder="${esc(c.avanceExcel?.banco && c.avanceExcel.banco!=='Por definir' ? c.avanceExcel.banco : '')}"></div>
-        <div class="field"><label>Ejecutivo/a banco</label><input data-d="ejecutivo" value="${esc(d.ejecutivo||'')}"></div>
-        <div class="field"><label>Notaría</label><input data-d="notaria" value="${esc(d.notaria||'')}" list="notarias"></div>
-        <div class="field"><label>Fecha estimada de firma</label><input type="date" data-d="fechaEstimada" value="${esc(d.fechaEstimada||'')}"></div></div>`;
-    if (p.n === 2) extra = `<div class="fields"><div class="field"><label>N° repertorio</label><input data-d="repertorio" value="${esc(d.repertorio||'')}"></div></div>`;
-    if (p.n === 4) {
-      const v = s.validacion || (s.validacion = {});
-      extra = `<div class="fin">
-        ${kv('Forma de compra', esc(c.compra))}${kv('Precio', fUF(c.precio)+' UF')}
-        ${kv('Pie (contado)', fUF(c.contado)+' UF')}${kv('Crédito hipotecario', fUF(c.credito)+' UF')}
-        ${c.ahorro ? kv('Ahorro previo', fUF(c.ahorro)+' UF') : ''}${c.subsidio ? kv('Subsidio', fUF(c.subsidio)+' UF') : ''}
-        ${c.incobrable ? kv('Incobrable / bono pie', fUF(c.incobrable)+' UF') : ''}
-        ${kv('Cobrado a la fecha', fUF(c.cobrado)+' UF')}${kv('Saldo por cobrar (Excel)', fUF(c.saldoPorCobrar)+' UF')}
-        ${kv('Saldo a pagar por el cliente', `<b style="color:var(${i.saldoPend?'--danger':'--done'})">${fUF(c.saldoCliente)} UF</b>`)}
-        ${kv('Fondo Puesta en Marcha', `<b style="color:var(${i.pemPend?'--danger':'--done'})">${fUF(c.pem)} de ${CONFIG.UF_PUESTA_EN_MARCHA} UF</b>`)}
-      </div>
-      <div class="hint">Saldo a pagar por el cliente = Saldo por cobrar − crédito − ahorro previo − subsidio. Montos del Excel; confirma contra la cartola antes de marcar.</div>
-      <label class="check"><input type="checkbox" data-v="saldoOk" ${v.saldoOk?'checked':''}> Saldo del precio verificado ${c.compra==='Contado'?'(pago al contado)':'(pagos que le corresponden al cliente)'}</label>
-      <label class="check"><input type="checkbox" data-v="pemOk" ${v.pemOk?'checked':''}> Puesta en marcha de UF ${CONFIG.UF_PUESTA_EN_MARCHA} verificada</label>`;
-    }
-    if (p.n === 6) extra = `<div class="fields">
-        <div class="field"><label>Fecha coordinada de entrega</label><input type="date" data-d="fechaEntregaCoord" value="${esc(d.fechaEntregaCoord||'')}"></div>
-        <div class="field"><label>Acta de entrega</label><select data-d="acta">${['','Firmada','Pendiente'].map(o => `<option ${(d.acta||'')===o?'selected':''}>${o}</option>`).join('')}</select></div></div>`;
-    return `<div class="step ${ps.done?'done':''} ${actual?'current':''}" data-paso="${p.n}">
-      <div class="sh"><div class="num">${ps.done?'✓':p.n}</div><div style="flex:1;min-width:0"><div class="st">${esc(p.t)}</div><div class="sd">${esc(p.d)}</div></div></div>
-      <div class="sb">
-        ${extra}
-        <div class="fields">
-          <label class="check"><input type="checkbox" data-paso-done="${p.n}" ${ps.done?'checked':''}> Completado</label>
-          <div class="field"><label>Fecha</label><input type="date" data-paso-fecha="${p.n}" value="${esc(ps.fecha||'')}"></div>
-        </div>
+    let accion;
+    if (ps.done && p.n <= i.k) accion = `<span class="badge ok">Completado ${fFecha(ps.fecha)}</span>${p.n === i.k ? ` <button class="btn small" data-act="reabrir" data-n="${p.n}">Reabrir</button>` : ''}`;
+    else if (actual) accion = `<button class="btn primary small" data-act="completar" data-n="${p.n}">Completar paso</button>`;
+    else accion = `<span class="hint">Después del paso ${i.k + 1}</span>`;
+    const extra = [];
+    if (p.n === 1) extra.push(`<div class="fields">${inpF(c,'preparadaPor',{ops:['Banco','Inmobiliaria'],blank:true})}${inpF(c,'ejecutivo')}${inpF(c,'notaria',{list:'notarias'})}${inpF(c,'fechaEstimada')}</div>`);
+    if (p.n === 2) extra.push(`<div class="fields">${inpF(c,'repertorio')}</div>`);
+    if (p.n === 4) extra.push(finHTML(c), `<div class="hint">Verificaciones: saldo ${s.validacion.saldoOk?'✓ confirmado':'pendiente'} · puesta en marcha ${s.validacion.pemOk?'✓ confirmada':'pendiente'} (se confirman al completar el paso).</div>`);
+    if (p.n === 6) extra.push(`<div class="fields">${inpF(c,'fechaEntregaCoord')}${inpF(c,'acta',{ops:['Firmada','Pendiente'],blank:true})}</div>`);
+    return `<div class="step ${ps.done && p.n <= i.k ?'done':''} ${actual?'current':''}" data-paso="${p.n}">
+      <div class="sh"><div class="num">${ps.done && p.n <= i.k ?'✓':p.n}</div><div style="flex:1;min-width:0"><div class="st">${esc(p.t)}</div><div class="sd">${esc(p.d)}</div></div><div>${accion}</div></div>
+      <div class="sb">${extra.join('')}
+        ${ps.done && p.n <= i.k ? `<div class="fields"><div class="field"><label>Fecha del paso</label><input type="date" data-paso-fecha="${p.n}" value="${esc(ps.fecha||'')}"></div></div>` : ''}
         <div class="field"><label>Nota del paso</label><textarea data-paso-nota="${p.n}" placeholder="Observaciones de este paso">${esc(ps.nota||'')}</textarea></div>
       </div></div>`;
   };
+  const logHTML = b => `<li class="${b.tipo==='paso'?'paso':b.tipo==='campo'?'campo':''}"><div>${esc(b.texto)}</div><div class="m">${fFechaHora(b.t)}${b.u?' · '+esc(b.u):''}${b.origen?' · '+esc(b.origen):''}</div></li>`;
   $('#drawer').innerHTML = `
-    <div class="dhead"><div style="flex:1;min-width:0"><h2>${esc(c.nombre)}</h2><div class="s">${esc(c.grupo?c.grupo+' · ':'')}${esc(c.id)} · ${esc(unidades(c))} · ${esc(c.compra)}</div><div class="chips">${dots(i.k)} ${chipsAlerta(c,i)}</div></div>
+    <div class="dhead"><div style="flex:1;min-width:0"><h2>${esc(c.nombre)}</h2><div class="s">${esc(c.grupo?c.grupo+' · ':'')}${esc(c.id)} · ${esc(unidades(c))} · ${esc(val(c,'broker'))}</div><div class="chips">${dots(i.k)} <span class="badge muted">${esc(COLUMNAS[i.k])}</span>${chipsAlerta(c,i)}</div></div>
       <button class="btn" id="cerrar" aria-label="Cerrar">✕</button></div>
     <div class="dbody">
       <div class="box"><h4>Gestión</h4><div class="fields">
         <div class="field"><label>Estado de la gestión</label><select id="gGestion">${ESTADOS_GESTION.map(o => `<option ${s.gestion===o?'selected':''}>${o}</option>`).join('')}</select></div>
-        <div class="field" style="grid-column:span 2"><label>Próxima acción</label><input id="gProx" value="${esc(s.proxAccion||'')}" placeholder="Ej. Llamar al ejecutivo por borrador"></div>
+        <div class="field"><label>Próxima acción</label><input id="gProx" value="${esc(s.proxAccion||'')}" placeholder="Ej. Llamar al ejecutivo por borrador"></div>
         <div class="field"><label>Fecha compromiso</label><input type="date" id="gComp" value="${esc(s.fechaCompromiso||'')}"></div>
       </div></div>
 
+      <div class="box"><h4>Crédito, unidad y broker <span class="hint">· compartido con Cartera Brokers · actualizado ${esc(fFechaHora(s.datos.fichaActualizada||'') || '—')}</span></h4>
+        ${pend.length ? `<div class="banner warn" style="margin-bottom:10px;padding:6px 10px">Pendiente: ${esc(pend.join(', '))}</div>` : ''}
+        <div class="fields">
+          ${inpF(c,'broker',{list:'dlBrokers'})}${inpF(c,'banco',{list:'bancos'})}${inpF(c,'credEstado',{ops:ESTADOS_CREDITO})}
+          ${inpF(c,'credMonto')}${inpF(c,'precioEscritura')}${inpF(c,'incobrable')}
+          ${inpF(c,'fogaes',{ops:['No','Sí']})}${inpF(c,'deptoNuevo',{list:'dlDeptos', disabled:!fog, ph: fog ? 'Obligatorio' : '—'})}
+          <div class="field"><label>Pagará al contado (UF)</label><input value="${fUF(m)}" disabled title="Precio de escritura − crédito − incobrable − ahorro previo − subsidio"></div>
+          ${inpF(c,'estacs')}${inpF(c,'bodegas')}<div></div>
+          ${inpF(c,'observaciones',{cls:'span2'})}
+        </div>
+        <div class="hint" style="margin-top:6px">Pagará al contado = precio de escritura − crédito − incobrable − ahorro previo − subsidio.</div>
+      </div>
+
       <div class="box"><h4>Cliente</h4><div class="grid2">
         ${kv('RUT', esc(c.rut))}${kv('Teléfono', c.tel ? `<a href="tel:${esc(c.tel.replace(/\s/g,''))}">${esc(c.tel)}</a>` : '')}
-        ${kv('Correo', c.mail ? `<a href="mailto:${esc(c.mail)}">${esc(c.mail)}</a>` : '')}${kv('Vendedor', esc(c.vendedor))}
+        ${kv('Correo', c.mail ? `<a href="mailto:${esc(c.mail)}">${esc(c.mail)}</a>` : '')}${kv('Vendedor (Excel)', esc(c.vendedor))}
         ${kv('Estado / etapa negocio', esc(c.estado+' · '+c.etapa))}${kv('Fecha promesa', fFecha(c.fPromesa))}
         ${kv('Avance según Excel', esc(c.avanceExcel ? c.avanceExcel.estado+(c.avanceExcel.fecha?' ('+fFecha(c.avanceExcel.fecha)+')':'') : ''))}${kv('Domicilio', esc(c.direccion))}
       </div>${c.comentario ? `<div class="hint" style="margin-top:8px">Comentario Excel: ${esc(c.comentario)}</div>` : ''}</div>
@@ -568,10 +965,11 @@ function pintarFicha(){
           </tbody></table></div>${c.pagos.length>12?`<div class="hint">Mostrando los 12 más recientes.</div>`:''}` : '<div class="hint">Sin pagos en la hoja Pagos.</div>'}
       </div>
 
-      <div class="box"><h4>Bitácora</h4>
+      <div class="box"><h4>Historial y bitácora</h4>
         <div class="field"><textarea id="nuevaNota" placeholder="Registrar llamada, correo, acuerdo…"></textarea></div>
-        <div style="margin:8px 0 12px"><button class="btn primary small" id="agregarNota">Agregar a la bitácora</button></div>
-        <ul class="log">${(s.bitacora||[]).map(b => `<li class="${b.tipo==='paso'?'paso':''}"><div>${esc(b.texto)}</div><div class="m">${fFechaHora(b.t)}${b.u?' · '+esc(b.u):''}</div></li>`).join('') || '<li class="m">Sin registros todavía.</li>'}</ul>
+        <div style="margin:8px 0 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary small" id="agregarNota">Agregar nota</button>
+          <span class="hint">Verde: cambios de etapa · Azul: cambios de datos · Gris: notas</span></div>
+        <ul class="log">${(s.bitacora||[]).map(logHTML).join('') || '<li class="m">Sin registros todavía.</li>'}</ul>
       </div>
     </div>`;
 }
@@ -580,34 +978,26 @@ function pintarFicha(){
 function onFicha(e){
   const t = e.target; if (!ABIERTO) return;
   const key = ABIERTO, s = segDe(key);
-  if (t.id === 'cerrar') return cerrar();
-  if (t.id === 'agregarNota' && e.type === 'click'){
-    const v = $('#nuevaNota').value.trim(); if (!v) return;
-    tocar(key, v, 'nota'); pintarFicha(); return;
+  if (e.type === 'click'){
+    if (t.id === 'cerrar') return cerrar();
+    if (t.id === 'agregarNota'){ const v = $('#nuevaNota').value.trim(); if (!v) return; tocar(key, v, 'nota'); return refrescar(); }
+    if (t.dataset.act === 'completar') return abrirFormPaso(key, +t.dataset.n);
+    if (t.dataset.act === 'reabrir') return abrirRetroceso(key, +t.dataset.n - 1);
+    return;
   }
   if (e.type !== 'change') return;
-  if (t.id === 'gGestion'){ const a = s.gestion; s.gestion = t.value; tocar(key, `Estado de gestión: ${a||'—'} → ${t.value}`); }
-  else if (t.id === 'gProx'){ s.proxAccion = t.value.trim(); tocar(key, s.proxAccion ? `Próxima acción: ${s.proxAccion}` : ''); }
-  else if (t.id === 'gComp'){ s.fechaCompromiso = t.value; tocar(key, t.value ? `Fecha compromiso: ${fFecha(t.value)}` : ''); }
-  else if (t.dataset.d){ const a = s.datos[t.dataset.d]; s.datos[t.dataset.d] = t.value.trim(); tocar(key, (a||'') !== s.datos[t.dataset.d] ? `${t.closest('.field').querySelector('label').textContent}: ${s.datos[t.dataset.d] || '(vacío)'}` : ''); }
-  else if (t.dataset.v){ s.validacion[t.dataset.v] = t.checked; tocar(key, `${t.parentElement.textContent.trim()}: ${t.checked?'sí':'no'}`); }
-  else if (t.dataset.pasoDone){
-    const nP = +t.dataset.pasoDone, p = s.pasos[nP] || (s.pasos[nP] = {});
-    if (t.checked){
-      const faltan = PASOS.filter(x => x.n < nP && !s.pasos[x.n]?.done).map(x => x.n);
-      if (faltan.length && !confirm(`Faltan los pasos ${faltan.join(', ')}. ¿Marcar el paso ${nP} igual?`)){ t.checked = false; return; }
-      if (nP === 5 && !(s.validacion?.saldoOk && s.validacion?.pemOk) && !confirm('La validación financiera (paso 4) no está confirmada. ¿Firmar igual?')){ t.checked = false; return; }
-      if (nP === 4 && !(s.validacion?.saldoOk && s.validacion?.pemOk) && !confirm('No están marcadas las verificaciones de saldo y puesta en marcha. ¿Completar igual?')){ t.checked = false; return; }
-      p.done = true; p.fecha = p.fecha || hoyISO();
-      tocar(key, `Paso ${nP} completado: ${PASOS[nP-1].t} (${fFecha(p.fecha)})`, 'paso');
-    } else {
-      p.done = false; tocar(key, `Paso ${nP} reabierto: ${PASOS[nP-1].t}`, 'paso');
-    }
+  if (t.id === 'gGestion'){ const a = s.gestion; s.gestion = t.value; registrar(key, { tipo:'campo', campo:'gestion', antes:a, despues:t.value, origen:'Escrituración', texto:`Estado de gestión: ${a||'—'} → ${t.value}` }); }
+  else if (t.id === 'gProx'){ const a = s.proxAccion; s.proxAccion = t.value.trim(); registrar(key, { tipo:'campo', campo:'proxAccion', antes:a, despues:s.proxAccion, origen:'Escrituración', texto:`Próxima acción: ${s.proxAccion || '(vacía)'}` }); }
+  else if (t.id === 'gComp'){ const a = s.fechaCompromiso; s.fechaCompromiso = t.value; registrar(key, { tipo:'campo', campo:'fechaCompromiso', antes:a, despues:t.value, origen:'Escrituración', texto:`Fecha compromiso: ${fFecha(t.value) || '(vacía)'}` }); }
+  else if (t.dataset.f){
+    if (CAMPOS[t.dataset.f]?.num && n(t.value) < 0){ toast('El monto no puede ser negativo'); return refrescar(); }
+    setCampo(key, t.dataset.f, t.value, 'Escrituración');
+    if (t.dataset.f === 'fogaes' && t.value === 'Sí') toast('Indica el departamento nuevo: es obligatorio cuando cambia por FOGAES');
   }
-  else if (t.dataset.pasoFecha){ const p = s.pasos[t.dataset.pasoFecha] || (s.pasos[t.dataset.pasoFecha] = {}); p.fecha = t.value; tocar(key, `Paso ${t.dataset.pasoFecha}: fecha ${fFecha(t.value) || '(vacía)'}`); }
+  else if (t.dataset.pasoFecha){ const p = s.pasos[t.dataset.pasoFecha] || (s.pasos[t.dataset.pasoFecha] = {}); const a = p.fecha; p.fecha = t.value; registrar(key, { tipo:'campo', campo:`paso${t.dataset.pasoFecha}.fecha`, antes:a, despues:t.value, origen:'Escrituración', texto:`Paso ${t.dataset.pasoFecha}: fecha ${fFecha(a)||'(vacía)'} → ${fFecha(t.value) || '(vacía)'}` }); }
   else if (t.dataset.pasoNota){ const p = s.pasos[t.dataset.pasoNota] || (s.pasos[t.dataset.pasoNota] = {}); p.nota = t.value.trim(); tocar(key, p.nota ? `Paso ${t.dataset.pasoNota} – nota: ${p.nota}` : ''); }
   else return;
-  const y = $('#drawer').scrollTop; pintarFicha(); $('#drawer').scrollTop = y;
+  refrescar();
 }
 
 /* =========================================================
@@ -618,15 +1008,19 @@ function exportar(){
   const wb = XLSX.utils.book_new();
   const filas = CLIENTES.map(c => { const i = info(c), s = i.s, d = s.datos || {};
     const r = { 'Grupo':c.grupo, 'Id Negocio':c.id, 'Cliente':c.nombre, 'RUT':c.rut, 'Teléfono':c.tel, 'Correo':c.mail,
-      'Depto.':c.depto, 'Estacionamiento':c.estac, 'Bodega':c.bodega, 'Estado negocio':c.estado, 'Etapa negocio':c.etapa, 'Forma de compra':c.compra,
-      'Banco':d.banco||'', 'Ejecutivo banco':d.ejecutivo||'', 'Notaría':d.notaria||'', 'Escritura preparada por':d.preparadaPor||'',
+      'Broker':val(c,'broker'), 'Depto. actual':c.depto, '¿Cambia por FOGAES?':val(c,'fogaes'), 'Depto. nuevo':val(c,'deptoNuevo'),
+      'Estacionamientos':val(c,'estacs'), 'Bodegas':val(c,'bodegas'), 'Estado negocio':c.estado, 'Etapa negocio':c.etapa,
+      'Banco':val(c,'banco'), 'Estado del crédito':val(c,'credEstado'), 'Monto crédito UF':n(val(c,'credMonto')),
+      'Precio escritura UF':n(val(c,'precioEscritura')), 'Monto incobrable UF':n(val(c,'incobrable')), 'Pagará al contado UF':Math.round(montoContado(c)*100)/100,
+      'Ejecutivo banco':d.ejecutivo||'', 'Notaría':d.notaria||'', 'Escritura preparada por':d.preparadaPor||'',
       'Pasos completados':i.k, 'Etapa actual': i.k<6 ? `Pendiente ${i.k+1}: ${PASOS[i.k].t}` : 'Entregado' };
-    PASOS.forEach(p => { r[`${p.n}. ${p.t}`] = s.pasos[p.n]?.done ? (s.pasos[p.n].fecha ? fFecha(s.pasos[p.n].fecha) : 'Sí') : ''; });
-    Object.assign(r, { 'N° repertorio':d.repertorio||'', 'Fecha estimada firma':fFecha(d.fechaEstimada||''), 'Fecha coordinada entrega':fFecha(d.fechaEntregaCoord||''), 'Acta de entrega':d.acta||'',
-      'Precio UF':+c.precio.toFixed(2), 'Crédito hipotecario UF':+c.credito.toFixed(2), 'Cobrado a la fecha UF':+c.cobrado.toFixed(2), 'Saldo cliente UF':+c.saldoCliente.toFixed(2),
+    PASOS.forEach(p => { r[`${p.n}. ${p.t}`] = s.pasos[p.n]?.done && p.n <= i.k ? (s.pasos[p.n].fecha ? fFecha(s.pasos[p.n].fecha) : 'Sí') : ''; });
+    Object.assign(r, { 'N° repertorio':d.repertorio||'', 'Fecha agendada firma':fFecha(d.fechaEstimada||''), 'Fecha coordinada entrega':fFecha(d.fechaEntregaCoord||''), 'Acta de entrega':d.acta||'',
+      'Precio Excel UF':+c.precio.toFixed(2), 'Crédito Excel UF':+c.credito.toFixed(2), 'Cobrado a la fecha UF':+c.cobrado.toFixed(2), 'Saldo cliente UF':+c.saldoCliente.toFixed(2),
       'Puesta en marcha pagada UF':+c.pem.toFixed(2), 'Saldo verificado':s.validacion?.saldoOk?'Sí':'', 'PEM verificada':s.validacion?.pemOk?'Sí':'',
       'Estado gestión':s.gestion||'', 'Próxima acción':s.proxAccion||'', 'Fecha compromiso':fFecha(s.fechaCompromiso||''),
-      'Días en etapa':i.diasEtapa ?? '', 'Última actualización':fFecha(i.ultFecha),
+      'Observaciones':val(c,'observaciones'), 'Datos pendientes':pendientesFicha(c).join(', '),
+      'Días en etapa':i.diasEtapa ?? '', 'Actualización de datos':fFechaHora(d.fichaActualizada||''), 'Última actualización':fFecha(i.ultFecha),
       'Alertas':[i.problema&&'Problema', i.vencido&&'Compromiso vencido', i.sinMov&&'Sin movimiento', i.desorden&&'Pasos fuera de orden', i.k>=3&&i.saldoPend&&'Saldo pendiente', i.k>=3&&i.pemPend&&'PEM pendiente'].filter(Boolean).join(', '),
       'Última nota':(s.bitacora||[]).find(b => b.tipo==='nota')?.texto || '' });
     return r; })
@@ -635,23 +1029,22 @@ function exportar(){
   ws1['!cols'] = Object.keys(filas[0] || {}).map(k => ({wch: Math.min(40, Math.max(10, k.length + 2))}));
   if (filas.length) ws1['!autofilter'] = { ref: ws1['!ref'] };
   XLSX.utils.book_append_sheet(wb, ws1, 'Seguimiento');
-  // Resumen por etapa
   const res = [...PASOS.map((p,j) => ({'Etapa':`Pendiente ${p.n}: ${p.t}`, 'Clientes':filas.filter(f => f['Pasos completados']===j && f['Estado negocio']==='Vigente').length})),
     {'Etapa':'Entregados', 'Clientes':filas.filter(f => f['Pasos completados']===6).length}];
   const ws2 = XLSX.utils.json_to_sheet(res); ws2['!cols'] = [{wch:50},{wch:10}];
   XLSX.utils.book_append_sheet(wb, ws2, 'Resumen por etapa');
-  // Bitácora
   const nombres = Object.fromEntries(CLIENTES.map(c => [c.key, c]));
   const bit = [];
-  for (const [k,s] of Object.entries(SEG.clientes)) for (const b of (s.bitacora||[])) bit.push({'Fecha y hora':fFechaHora(b.t), '_t':b.t, 'Grupo':nombres[k]?.grupo ?? k.split('/')[0], 'Id Negocio':nombres[k]?.id ?? k.split('/').pop(), 'Cliente':nombres[k]?.nombre || '', 'Tipo':b.tipo==='paso'?'Avance de paso':b.tipo==='nota'?'Nota':'Cambio', 'Detalle':b.texto, 'Usuario':b.u||''});
+  for (const [k,s] of Object.entries(SEG.clientes)) for (const b of (s.bitacora||[])) bit.push({'Fecha y hora':fFechaHora(b.t), '_t':b.t, 'Grupo':nombres[k]?.grupo ?? k.split('/')[0], 'Id Negocio':nombres[k]?.id ?? k.split('/').pop(), 'Cliente':nombres[k]?.nombre || '',
+    'Tipo':b.tipo==='paso'?'Cambio de etapa':b.tipo==='nota'?'Nota':'Cambio de dato', 'Campo':b.campo ? (CAMPOS[b.campo]?.label || b.campo) : '', 'Valor anterior':b.campo ? fVal(b.campo, b.antes) : '', 'Valor nuevo':b.campo ? fVal(b.campo, b.despues) : '',
+    'Menú':b.origen||'', 'Detalle':b.texto, 'Usuario':b.u||''});
   bit.sort((a,b) => b._t.localeCompare(a._t)); bit.forEach(b => delete b._t);
-  const ws3 = XLSX.utils.json_to_sheet(bit.length ? bit : [{'Fecha y hora':'','Grupo':'','Id Negocio':'','Cliente':'','Tipo':'','Detalle':'','Usuario':''}]);
-  ws3['!cols'] = [{wch:18},{wch:7},{wch:10},{wch:34},{wch:14},{wch:70},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, ws3, 'Bitácora');
-  // Respaldo técnico para volver a cargar
+  const ws3 = XLSX.utils.json_to_sheet(bit.length ? bit : [{'Fecha y hora':'','Grupo':'','Id Negocio':'','Cliente':'','Tipo':'','Campo':'','Valor anterior':'','Valor nuevo':'','Menú':'','Detalle':'','Usuario':''}]);
+  ws3['!cols'] = [{wch:18},{wch:7},{wch:10},{wch:34},{wch:15},{wch:24},{wch:18},{wch:18},{wch:22},{wch:70},{wch:14}];
+  if (bit.length) ws3['!autofilter'] = { ref: ws3['!ref'] };
+  XLSX.utils.book_append_sheet(wb, ws3, 'Historial');
   const resp = [['clave','json'], ...Object.entries(SEG.clientes).map(([k,s]) => [k, JSON.stringify(s)])];
-  const ws4 = XLSX.utils.aoa_to_sheet(resp);
-  XLSX.utils.book_append_sheet(wb, ws4, '_respaldo');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(resp), '_respaldo');
   wb.Workbook = { Sheets: [{},{},{},{Hidden:1}] };
   const d = new Date(), stamp = hoyISO() + ' ' + String(d.getHours()).padStart(2,'0') + String(d.getMinutes()).padStart(2,'0');
   XLSX.writeFile(wb, `Seguimiento Escrituración Espacio Las Tablas ${stamp}.xlsx`);
@@ -687,25 +1080,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('#file').onchange = e => { manejarArchivos([...e.target.files]); e.target.value = ''; };
   $('#btnExportar').onclick = exportar;
   $('#banners').addEventListener('click', e => { const a = e.target.dataset.act; if (a === 'exportar') exportar(); if (a === 'recargar') abrirSel(); });
+  $('#nav').onclick = e => { const m = e.target.dataset.m; if (!m) return; MENU = m; [...$('#nav').children].forEach(b => b.classList.toggle('on', b.dataset.m === m)); pintarTodo(); };
+  // archivos arrastrados a la página (no tarjetas)
   const drop = $('#vacio');
-  ['dragenter','dragover'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
-  ['dragleave','drop'].forEach(ev => document.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
-  document.addEventListener('drop', e => manejarArchivos([...e.dataTransfer.files]));
+  const esArchivo = e => [...(e.dataTransfer?.types || [])].includes('Files');
+  ['dragenter','dragover'].forEach(ev => document.addEventListener(ev, e => { if (!esArchivo(e)) return; e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => document.addEventListener(ev, e => { if (!esArchivo(e)) return; e.preventDefault(); drop.classList.remove('over'); }));
+  document.addEventListener('drop', e => { if (esArchivo(e)) manejarArchivos([...e.dataTransfer.files]); });
+  // Kanban: arrastrar y soltar
+  let ARRASTRANDO = null;
+  const tab = $('#tablero');
+  tab.addEventListener('dragstart', e => { const card = e.target.closest('.card'); if (!card) return; ARRASTRANDO = card.dataset.key; card.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', ARRASTRANDO); });
+  tab.addEventListener('dragend', e => { e.target.closest('.card')?.classList.remove('dragging'); ARRASTRANDO = null; tab.querySelectorAll('.col').forEach(c => c.classList.remove('dropok','dropno')); });
+  tab.addEventListener('dragover', e => { const col = e.target.closest('.col'); if (!col || !ARRASTRANDO) return; e.preventDefault();
+    const k = etapaActual(segDe(ARRASTRANDO)), d = +col.dataset.col;
+    tab.querySelectorAll('.col').forEach(c => c.classList.remove('dropok','dropno')); if (d !== k) col.classList.add(d > k + 1 ? 'dropno' : 'dropok'); });
+  tab.addEventListener('drop', e => { const col = e.target.closest('.col'); if (!col || !ARRASTRANDO) return; e.preventDefault(); const key = ARRASTRANDO; ARRASTRANDO = null;
+    tab.querySelectorAll('.col').forEach(c => c.classList.remove('dropok','dropno')); moverA(key, +col.dataset.col); });
+  tab.onclick = e => { const c = e.target.closest('.card'); if (c) abrir(c.dataset.key); };
   ['q','fEstado','fEtapa','fCompra','fGrupo','fAlerta'].forEach(id => $('#'+id).addEventListener('input', pintarTodo));
+  ['bBroker','bQ','bEstado','bCred','bFog','bFalt'].forEach(id => $('#'+id).addEventListener('input', pintarBrokers));
+  $('#bTabla').addEventListener('change', onBrokerEdit);
+  $('#bPdf').onclick = imprimirBrokers; $('#bXls').onclick = excelBrokers;
   $('#vista').onclick = e => { const v = e.target.dataset.v; if (!v) return; VISTA = v; [...$('#vista').children].forEach(b => b.classList.toggle('on', b.dataset.v === v)); pintarTodo(); };
   $('#funnel').onclick = e => { const b = e.target.closest('.kpi'); if (!b) return;
     if (b.dataset.alert){ $('#fAlerta').value = $('#fAlerta').value === 'alerta' ? '' : 'alerta'; }
     else { const k = +b.dataset.k; FILTRO_COL = FILTRO_COL === k ? null : k; }
     pintarTodo(); };
-  $('#tablero').onclick = e => { const c = e.target.closest('.card'); if (c) abrir(c.dataset.key); };
   $('#lista').onclick = e => { const th = e.target.closest('th'); if (th){ const k = th.dataset.s; ORDEN = {c:k, d: ORDEN.c===k ? -ORDEN.d : 1}; return pintarTodo(); } const tr = e.target.closest('tr[data-key]'); if (tr) abrir(tr.dataset.key); };
   $('#scrim').onclick = cerrar;
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && ABIERTO) cerrar(); });
+  $('#modal').addEventListener('click', e => { if (e.target.id === 'modal' || e.target.dataset.m === 'cancelar') cerrarModal(); if (e.target.dataset.m === 'ok') confirmarModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape'){ if (MODAL) cerrarModal(); else if (ABIERTO) cerrar(); } });
   $('#drawer').addEventListener('change', onFicha); $('#drawer').addEventListener('click', onFicha);
   window.addEventListener('beforeunload', e => { if (SEG.cambiosSinRespaldo > 0){ e.preventDefault(); e.returnValue = ''; } });
-  // listas de apoyo
   document.body.insertAdjacentHTML('beforeend', `<datalist id="bancos">${['Banco BCI','Banco BICE','Banco Consorcio','Banco de Chile','BancoEstado','Banco Itaú','Banco Santander','Banco Security','Scotiabank','Banco Falabella','Banco Internacional','Coopeuch','Hipotecaria La Construcción','Metlife','Principal'].map(b=>`<option value="${b}">`).join('')}</datalist>
-    <datalist id="notarias">${['Álvaro David González Salinas','Alberto Mozó','Andrés Rubio','Antonieta Rojas','Cosme Gomila','Eduardo Avello','Eduardo Diez','Felix Jara','Francisco Leiva','Gerardo Carvallo','Gino Beneventi','Gonzalo De La Cuadra','Hernán Cuadra','Humberto Quezada','Luis Fischer','María Pilar Gutiérrez','Maria Soledad Lascar','Myriam Amigo','Patricio Raby','Patricio Zaldívar','René Benavente','Ricardo Reveco'].map(b=>`<option value="${b}">`).join('')}</datalist>`);
+    <datalist id="notarias">${['Álvaro David González Salinas','Alberto Mozó','Andrés Rubio','Antonieta Rojas','Cosme Gomila','Eduardo Avello','Eduardo Diez','Felix Jara','Francisco Leiva','Gerardo Carvallo','Gino Beneventi','Gonzalo De La Cuadra','Hernán Cuadra','Humberto Quezada','Luis Fischer','María Pilar Gutiérrez','Maria Soledad Lascar','Myriam Amigo','Patricio Raby','Patricio Zaldívar','René Benavente','Ricardo Reveco'].map(b=>`<option value="${b}">`).join('')}</datalist>
+    <datalist id="dlBrokers"></datalist><datalist id="dlDeptos"></datalist>`);
   await IDB.open();
   await reconstruir();
 });
